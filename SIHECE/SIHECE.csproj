@@ -67,6 +67,9 @@
     <EmbeddedResource Include="Controles\myForm.resx">
       <DependentUpon>myForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\frmSplash.resx">
+      <DependentUpon>frmSplash.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -104,8 +107,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Formularios\" />
-    <Folder Include="Controles\" />
     <Folder Include="Pantallas\" />
   </ItemGroup>
   <ItemGroup>
