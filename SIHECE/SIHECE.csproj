@@ -44,12 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="Controles\myForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controles\myForm.Designer.cs">
       <DependentUpon>myForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\frmSplash.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,11 +104,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Folder Include="Formularios\" />
-=======
     <Folder Include="Controles\" />
->>>>>>> origin/master
     <Folder Include="Pantallas\" />
   </ItemGroup>
   <ItemGroup>
@@ -124,11 +121,4 @@
     <None Include="Resources\Logo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
