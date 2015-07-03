@@ -2,7 +2,7 @@
 
 namespace AccesoDatos
 {
-    public class SQLServer : GDatos
+    public class MySQL : GDatos
     {
         /*
          * Continuaremos con el método Comando, procediendo de igual forma que en los anteriores. 
@@ -49,7 +49,7 @@ namespace AccesoDatos
 
         /*	
          * Agregue ahora la definición del procedimiento CargarParametros, el cual deberá asignar cada valor 
-         * al parámetro que corresponda (considerando que, en el caso de SQLServer©, el parameter 0 
+         * al parámetro que corresponda (considerando que, en el caso de MySql©, el parameter 0 
          * siempre corresponde al “return Value” del Procedimiento Almacenado). Por otra parte, en algunos casos,
          * como la ejecución de procedimientos almacenados que devuelven un valor como parámetro de salida, 
          * la cantidad de elementos en el vector de argumentos, puede no corresponder con la cantidad de parámetros. 
@@ -60,7 +60,7 @@ namespace AccesoDatos
         {
             for (int i = 1; i < com.Parameters.Count; i++)
             {
-                var p = (System.Data.SqlClient.SqlParameter)com.Parameters[i];
+                var p = (MySql.Data.MySqlClient.MySqlParameter)com.Parameters[i];
                 p.Value = i <= args.Length ? args[i - 1] ?? DBNull.Value : null;
             } // end for
         } // end CargarParametros
@@ -78,27 +78,27 @@ namespace AccesoDatos
          */
         protected override System.Data.IDbCommand Comando(string procedimientoAlmacenado)
         {
-            System.Data.SqlClient.SqlCommand com;
+            MySql.Data.MySqlClient.MySqlCommand com;
             if (ColComandos.Contains(procedimientoAlmacenado))
-                com = (System.Data.SqlClient.SqlCommand)ColComandos[procedimientoAlmacenado];
+                com = (MySql.Data.MySqlClient.MySqlCommand)ColComandos[procedimientoAlmacenado];
             else
             {
-                var con2 = new System.Data.SqlClient.SqlConnection(CadenaConexion);
+                var con2 = new MySql.Data.MySqlClient.MySqlConnection(CadenaConexion);
                 con2.Open();
-                com = new System.Data.SqlClient.SqlCommand(procedimientoAlmacenado, con2) { CommandType = System.Data.CommandType.StoredProcedure };
-                System.Data.SqlClient.SqlCommandBuilder.DeriveParameters(com);
+                com = new MySql.Data.MySqlClient.MySqlCommand(procedimientoAlmacenado, con2) { CommandType = System.Data.CommandType.StoredProcedure };
+                MySql.Data.MySqlClient.MySqlCommandBuilder.DeriveParameters(com);
                 con2.Close();
                 con2.Dispose();
                 ColComandos.Add(procedimientoAlmacenado, com);
             }//end else
-            com.Connection = (System.Data.SqlClient.SqlConnection)Conexion;
-            com.Transaction = (System.Data.SqlClient.SqlTransaction)MTransaccion;
+            com.Connection = (MySql.Data.MySqlClient.MySqlConnection)Conexion;
+            com.Transaction = (MySql.Data.MySqlClient.MySqlTransaction)MTransaccion;
             return com;
         }// end Comando
 
         protected override System.Data.IDbCommand ComandoSql(string comandoSql)
         {
-            var com = new System.Data.SqlClient.SqlCommand(comandoSql, (System.Data.SqlClient.SqlConnection)Conexion, (System.Data.SqlClient.SqlTransaction)MTransaccion);
+            var com = new MySql.Data.MySqlClient.MySqlCommand(comandoSql, (MySql.Data.MySqlClient.MySqlConnection)Conexion, (MySql.Data.MySqlClient.MySqlTransaction)MTransaccion);
             return com;
         }// end Comando
 
@@ -108,13 +108,13 @@ namespace AccesoDatos
          * objeto Conexión de SqlClient, utilizando la cadena de conexión del objeto.
          */
         protected override System.Data.IDbConnection CrearConexion(string cadenaConexion)
-        { return new System.Data.SqlClient.SqlConnection(cadenaConexion); }
+        { return new MySql.Data.MySqlClient.MySqlConnection(cadenaConexion); }
 
 
         //Finalmente, es el turno de definir CrearDataAdapter, el cual aprovecha el método Comando para crear el comando necesario.
         protected override System.Data.IDataAdapter CrearDataAdapter(string procedimientoAlmacenado, params Object[] args)
         {
-            var da = new System.Data.SqlClient.SqlDataAdapter((System.Data.SqlClient.SqlCommand)Comando(procedimientoAlmacenado));
+            var da = new MySql.Data.MySqlClient.MySqlDataAdapter((MySql.Data.MySqlClient.MySqlCommand)Comando(procedimientoAlmacenado));
             if (args.Length != 0)
                 CargarParametros(da.SelectCommand, args);
             return da;
@@ -123,7 +123,7 @@ namespace AccesoDatos
         //Finalmente, es el turno de definir CrearDataAdapter, el cual aprovecha el método Comando para crear el comando necesario.
         protected override System.Data.IDataAdapter CrearDataAdapterSql(string comandoSql)
         {
-            var da = new System.Data.SqlClient.SqlDataAdapter((System.Data.SqlClient.SqlCommand)ComandoSql(comandoSql));
+            var da = new MySql.Data.MySqlClient.MySqlDataAdapter((MySql.Data.MySqlClient.MySqlCommand)ComandoSql(comandoSql));
             return da;
         } // end CrearDataAdapterSql
 
@@ -132,7 +132,7 @@ namespace AccesoDatos
          * y de base de datos que son necesarios para acceder a datos, y otro que admita directamente la cadena de conexión completa.
          * Los constructores se definen como procedimientos públicos de nombre New.
          */
-        public SQLServer()
+        public MySQL()
         {
             Base = "";
             Servidor = "";
@@ -141,18 +141,18 @@ namespace AccesoDatos
         }// end DatosSQLServer
 
 
-        public SQLServer(string cadenaConexion)
+        public MySQL(string cadenaConexion)
         { CadenaConexion = cadenaConexion; }// end DatosSQLServer
 
 
-        public SQLServer(string servidor, string @base)
+        public MySQL(string servidor, string @base)
         {
             Base = @base;
             Servidor = servidor;
         }// end DatosSQLServer
 
 
-        public SQLServer(string servidor, string @base, string usuario, string password)
+        public MySQL(string servidor, string @base, string usuario, string password)
         {
             Base = @base;
             Servidor = servidor;
